@@ -14,37 +14,35 @@ const SavedBooks = () => {
     //const [userData, setUserData] = useState({});
     const [removebook] = useMutation(REMOVE_BOOK);
     const { loading, data } = useQuery(QUERY_ME);
-    const userData = data?.me || []
+    const userData = data?.me || [];
     if (loading) {
-      return <div>Loading...</div>
+      return <div>Loading...</div>;
     }
-  // create function that accepts the book's mongo _id value as param and deletes the book from the database
-  const handleDeleteBook = async (bookId) => {
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
+    // create function that accepts the book's mongo _id value as param and deletes the book from the database
+    const handleDeleteBook = async (bookId) => {
+      const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-    if (!token) {
-      return false;
-    }
-
-    try {
-      const {data} = await removebook({
-        variables: { bookId }
-      }); ///
-
-      if (!data.ok) {
-        throw new Error("something went wrong!");
+      if (!token) {
+        return false;
       }
 
- 
-      // upon success, remove book's id from localStorage
-      removeBookId(data.bookId);
-    } catch (err) {
-      console.error(err);
-    }
+      try {
+        const { data } = await removebook({
+          variables: { bookId },
+        }); ///
+
+        if (!data.ok) {
+          throw new Error("something went wrong!");
+        }
+
+        // upon success, remove book's id from localStorage
+        removeBookId(data.bookId);
+      } catch (err) {
+        console.error(err);
+      }
+    };
   };
-
   // if data isn't here yet, say so
-
 
   return (
     <>

@@ -32,7 +32,9 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await searchGoogleBooks(searchInput); ////
+      const response = awaitfetch(
+        `https://www.googleapis.com/books/v1/volumes?q=${searchInput}`
+      );
 
       if (!response.ok) {
         throw new Error("something went wrong!"); ///
@@ -68,9 +70,11 @@ const SearchBooks = () => {
     }
 
     try {
-      const response = await saveBook(bookToSave, token);
+      const { data } = await saveBook({
+        variables: { input: { ...bookToSave } },
+      });
 
-      if (!response.ok) {
+      if (!data.ok) {
         throw new Error("something went wrong!");
       }
 
